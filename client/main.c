@@ -9,7 +9,7 @@ int main(int argc, char **argv)
 {
     struct sockaddr_in *servaddr;
     int socket_fd;
-    int status = FALSE;
+    int status = TRUE;
     char buf[BUFF_SIZE];
 
     if (argc != 2 || (servaddr = get_sockaddr(argv[1])) == NULL)

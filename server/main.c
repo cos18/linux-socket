@@ -35,7 +35,7 @@ int main(int argc, char **argv)
     }
     printf("포트 %s번이 열리면서 바인드되었습니다.\n", argv[1]);
 
-    if (-1 == listen(socket_fd, 5))
+    if (-1 == listen(socket_fd, 1))
     {
         printf("listen() 실행 실패\n");
         return (-1);

@@ -20,19 +20,18 @@ CNAME	= socket_client
 SNAME	= socket_server
 
 GCC		= gcc
-GCCFLAG	= -Wall -Wextra -Werror
 RM		= rm -f
 
 .c.o:
-		$(GCC) $(GCCFLAG) -c $< -o $(<:.c=.o) -I$(INCDIR)
+		$(GCC) -c $< -o $(<:.c=.o) -I$(INCDIR)
 	
 all:	client server
 
 client:	$(COBJS) $(UOBJS)
-		$(GCC) $(GCCFLAG) -o $(CNAME) $(COBJS) $(UOBJS)
+		$(GCC) -o $(CNAME) $(COBJS) $(UOBJS)
 
 server:	$(SOBJS) $(UOBJS)
-		$(GCC) $(GCCFLAG) -o $(SNAME) $(SOBJS) $(UOBJS)
+		$(GCC) -o $(SNAME) $(SOBJS) $(UOBJS)
 
 clean:
 		$(RM) $(COBJS) $(SOBJS) $(UOBJS)
