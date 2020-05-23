@@ -24,7 +24,7 @@ int main(int argc, char **argv)
         free(servaddr);
         return (-1);
     }
-    if (connect(socket_fd, (struct sockaddr *)servaddr, sizeof(*servaddr)) < 0)
+    if (connect(socket_fd, (struct sockaddr *)servaddr, sizeof(*servaddr)) == -1)
     {
         printf("서버와의 연결에 실패했습니다!\n");
         return -1;
@@ -33,7 +33,9 @@ int main(int argc, char **argv)
     socket_write(socket_fd, "Hello Server\n");
     while (status)
     {
-        switch (socket_read(socket_fd, buf))
+        int socket_status = socket_read(socket_fd, buf);
+        printf("%d\n", socket_status);
+        switch (socket_status)
         {
         case READ_SUCCESS:
             printf("%s\n", buf);

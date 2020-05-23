@@ -34,6 +34,7 @@ void socket_write(int socket, char *data)
     memset(buf, 0, BUFF_SIZE);
     memcpy(buf, data, strlen(data));
     write(socket, buf, BUFF_SIZE);
+    printf("%s\n", buf);
 }
 
 /**
@@ -45,7 +46,7 @@ void socket_write(int socket, char *data)
  */
 int socket_read(int socket, char *buf)
 {
-    if (read(socket, buf, BUFF_SIZE) < 0)
+    if (read(socket, buf, BUFF_SIZE) == -1)
         return READ_ERR;
     return (*buf ? READ_SUCCESS : READ_END);
 }

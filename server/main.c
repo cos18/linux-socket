@@ -40,27 +40,32 @@ int main(int argc, char **argv)
         printf("listen() 실행 실패\n");
         return (-1);
     }
-    printf("클라이언트의 요청을 기다리는 중입니다...\n");
-    accept_socket = accept(socket_fd, (struct sockaddr *)&cliaddr, &addrlen);
-    if (accept_socket < 0)
+    while (1)
     {
-        printf("클라이언트 요청 처리 중 오류가 발생했습니다");
-        return (-1);
-    }
-    printf("클라이언트와 연결에 성공했습니다\n");
-    while (status)
-    {
-        switch (socket_read(accept_socket, buf))
+        printf("클라이언트의 요청을 기다리는 중입니다...\n");
+        accept_socket = accept(socket_fd, (struct sockaddr *)&cliaddr, &addrlen);
+        if (accept_socket < 0)
         {
-        case READ_SUCCESS:
-            printf("%s\n", buf);
-            socket_write(accept_socket, "Hello Client\n");
-            break;
-        case READ_END:
-        case READ_ERR:
-        default:
-            close(socket_fd);
-            status = FALSE;
+            printf("클라이언트 요청 처리 중 오류가 발생했습니다");
+            return (-1);
+        }
+        printf("클라이언트와 연결에 성공했습니다\n");
+        while (status)
+        {
+            int socket_status = socket_read(accept_socket, buf);
+            printf("%d\n", socket_status);
+            switch (socket_status)
+            {
+            case READ_SUCCESS:
+                printf("%s\n", buf);
+                socket_write(accept_socket, "Hello Client\n");
+                break;
+            case READ_END:
+            case READ_ERR:
+            default:
+                close(socket_fd);
+                status = FALSE;
+            }
         }
     }
     close(socket_fd);
