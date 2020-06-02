@@ -1,52 +1,39 @@
 #include <stdio.h>
-#include <stdlib.h>
-#include <netinet/ip.h>
-#include <unistd.h>
+#include <sys/stat.h>
+#include "simple_socket.h"
 #include "utils.h"
-#include "address.h"
+
+#define HEADER_LENGTH 8
+
+void send_to_server(svr_add *add)
+{
+    FILE *fp;
+    struct stat info;
+    uint8_t *raw_data;
+    int8_t server_sock;
+
+    fp = fopen("cute.png", "r");
+    fstat(fileno(fp), &info);
+    raw_data = malloc(HEADER_LENGTH + info.st_size);
+    fread(raw_data + HEADER_LENGTH, 1, info.st_size, fp);
+    fclose(fp);
+
+    /* Encode the size of the file in the 8 first bytes of our buffer
+	and then send the total to the server */
+    encode_64bit(info.st_size, raw_data);
+    server_sock = connect_to_server(add);
+    sendall(server_sock, raw_data, HEADER_LENGTH + info.st_size, NULL, 0);
+}
 
 int main(int argc, char **argv)
 {
-    struct sockaddr_in *servaddr;
-    int socket_fd;
-    int status = TRUE;
-    char buf[BUFF_SIZE];
-
-    if (argc != 2 || (servaddr = get_sockaddr(argv[1])) == NULL)
+    svr_add *add;
+    if (argc != 2 || (add = create_add(argv[1]) == NULL))
     {
         printf("프로그램 실행 방식이 잘못되었습니다.\n");
         printf("사용법 : %s (IP주소):(포트번호)\n", argv[0]);
         return (-1);
     }
-    if ((socket_fd = socket(PF_INET, SOCK_STREAM, 0)) < 0)
-    {
-        printf("소켓 생성에 실패했습니다!\n");
-        free(servaddr);
-        return (-1);
-    }
-    if (connect(socket_fd, (struct sockaddr *)servaddr, sizeof(*servaddr)) == -1)
-    {
-        printf("서버와의 연결에 실패했습니다!\n");
-        return -1;
-    }
-    printf("서버와의 연결에 성공했습니다!\n");
-    socket_write(socket_fd, "Hello Server\n");
-    while (status)
-    {
-        int socket_status = socket_read(socket_fd, buf);
-        printf("%d\n", socket_status);
-        switch (socket_status)
-        {
-        case READ_SUCCESS:
-            printf("%s\n", buf);
-            socket_write(socket_fd, "");
-        case READ_END:
-        case READ_ERR:
-        default:
-            close(socket_fd);
-            status = FALSE;
-        }
-    }
-    close(socket_fd);
-    free(servaddr);
+    send_to_server(add);
+    free_add(add);
 }

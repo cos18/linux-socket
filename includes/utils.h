@@ -1,17 +1,22 @@
 #ifndef UTILS_H
 #define UTILS_H
 
-#include <ctype.h>
-
-#define BUFF_SIZE 1024
-#define READ_ERR 0
-#define READ_SUCCESS 1
-#define READ_END 2
 #define TRUE 1
 #define FALSE 0
+#define HEADER_LENGTH 8
 
-int is_string_num(char *str);
-void socket_write(int socket, char *data);
-int socket_read(int socket, char *buf);
+#define ERR_SERVER_CREATE_FAIL 1
+#define ERR_SERVER_ACCEPT_FAIL 2
+
+typedef struct svr_address
+{
+    char *ip;
+    char *port;
+} svr_add;
+
+int get_port_num(char *str);
+void err_print(int errno);
+svr_add *create_add(char *str);
+void free_add(svr_add *s);
 
 #endif

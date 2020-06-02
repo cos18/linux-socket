@@ -1,73 +1,42 @@
 #include <stdio.h>
-#include <stdlib.h>
-#include <netinet/ip.h>
-#include <unistd.h>
+#include "simple_socket.h"
 #include "utils.h"
+
+void start_server(int port)
+{
+    int8_t server_sock, client_sock;
+    uint8_t header[HEADER_LENGTH];
+    uint8_t *raw_data;
+    uint64_t data_len;
+    FILE *fp;
+
+    if ((server_sock = create_ipv4_server(port, false)) == FALSE)
+        return err_print(ERR_SERVER_CREATE_FAIL);
+    listen(server_sock, BACKLOG);
+    if ((client_sock = accept_connection(server_sock, NULL, NULL)) == FALSE)
+        return err_print(ERR_SERVER_ACCEPT_FAIL);
+
+    /* Receive the header containing the file's size and 
+	allocate a buffer to store the data */
+    recvall(client_sock, header, HEADER_LENGTH, NULL, NULL);
+    data_len = decode_64bit(header);
+    raw_data = malloc(data_len);
+
+    /* Finally, receive the raw data and write it to a file */
+    recvall(client_sock, raw_data, data_len, NULL, NULL);
+    fp = fopen("success.png", "w");
+    fwrite(raw_data, 1, data_len, fp);
+    fclose(fp);
+}
 
 int main(int argc, char **argv)
 {
-    struct sockaddr_in servaddr, cliaddr;
-    socklen_t addrlen = sizeof(cliaddr);
-    int socket_fd;
-    int accept_socket;
-    int status = TRUE;
-    char buf[BUFF_SIZE];
-
-    if (argc != 2 || !is_string_num(argv[1]))
+    int port;
+    if (argc != 2 || (port = get_port_num(argv[1])))
     {
         printf("프로그램 실행 방식이 잘못되었습니다.\n");
         printf("사용법 : %s (포트번호)\n", argv[0]);
         return (-1);
     }
-    if ((socket_fd = socket(AF_INET, SOCK_STREAM, 0)) < 0)
-    {
-        printf("소켓 생성에 실패했습니다!");
-        return (-1);
-    }
-
-    servaddr.sin_family = AF_INET;
-    servaddr.sin_port = htons(atoi(argv[1]));
-    servaddr.sin_addr.s_addr = htonl(INADDR_ANY);
-    if (bind(socket_fd, (struct sockaddr *)&servaddr, sizeof(servaddr)) < 0)
-    {
-        printf("바인드에 실패했습니다!");
-        return (-1);
-    }
-    printf("포트 %s번이 열리면서 바인드되었습니다.\n", argv[1]);
-
-    if (-1 == listen(socket_fd, 1))
-    {
-        printf("listen() 실행 실패\n");
-        return (-1);
-    }
-    while (1)
-    {
-        printf("클라이언트의 요청을 기다리는 중입니다...\n");
-        accept_socket = accept(socket_fd, (struct sockaddr *)&cliaddr, &addrlen);
-        if (accept_socket < 0)
-        {
-            printf("클라이언트 요청 처리 중 오류가 발생했습니다");
-            return (-1);
-        }
-        printf("클라이언트와 연결에 성공했습니다\n");
-        while (status)
-        {
-            int socket_status = socket_read(accept_socket, buf);
-            printf("%d\n", socket_status);
-            switch (socket_status)
-            {
-            case READ_SUCCESS:
-                printf("%s\n", buf);
-                socket_write(accept_socket, "Hello Client\n");
-                break;
-            case READ_END:
-            case READ_ERR:
-            default:
-                close(socket_fd);
-                status = FALSE;
-            }
-        }
-    }
-    close(socket_fd);
-    return 0;
+    start_server(port);
 }
