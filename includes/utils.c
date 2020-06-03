@@ -13,7 +13,7 @@
  * @param str 확인해야 할 문자열
  * @return 변환한 포트 번호 or FALSE (0)
  */
-int is_string_num(char *str)
+int get_port_num(char *str)
 {
     int result;
     if (!isdigit(*str) || *str == '0')
@@ -56,7 +56,7 @@ svr_add *create_add(char *str)
     char *cut;
     char *ip;
     cut = strchr(str, ':');
-    if (cut == NULL || !is_string_num(cut + 1))
+    if (cut == NULL || !get_port_num(cut + 1))
         return NULL;
     ip = strndup(str, cut - str);
     if (inet_addr(ip) == INADDR_NONE)

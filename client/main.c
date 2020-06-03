@@ -28,7 +28,7 @@ void send_to_server(svr_add *add)
 int main(int argc, char **argv)
 {
     svr_add *add;
-    if (argc != 2 || (add = create_add(argv[1]) == NULL))
+    if (argc != 2 || (add = create_add(argv[1])) == NULL)
     {
         printf("프로그램 실행 방식이 잘못되었습니다.\n");
         printf("사용법 : %s (IP주소):(포트번호)\n", argv[0]);

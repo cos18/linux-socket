@@ -32,7 +32,7 @@ void start_server(int port)
 int main(int argc, char **argv)
 {
     int port;
-    if (argc != 2 || (port = get_port_num(argv[1])))
+    if (argc != 2 || (port = get_port_num(argv[1])) == FALSE)
     {
         printf("프로그램 실행 방식이 잘못되었습니다.\n");
         printf("사용법 : %s (포트번호)\n", argv[0]);
