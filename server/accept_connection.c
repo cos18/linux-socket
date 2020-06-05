@@ -13,6 +13,6 @@ int32_t accept_connection(int32_t server_sock, struct sockaddr *addr,
         sock = accept(server_sock, (struct sockaddr *)addr, addr_len);
     if (sock < 0)
         return FALSE;
-    recvall(sock, NULL, 0, NULL, NULL);
+    recvall(sock, NULL, 0);
     return sock;
 }

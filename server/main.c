@@ -1,42 +1,39 @@
-#include <stdio.h>
 #include "simple_socket.h"
 #include "utils.h"
 
-void start_server(int port)
+void start_server(int port, char *file_name)
 {
+    int err_code;
     int8_t server_sock, client_sock;
     uint8_t header[HEADER_LENGTH];
-    uint8_t *raw_data;
     uint64_t data_len;
-    FILE *fp;
 
     if ((server_sock = create_ipv4_server(port, false)) == FALSE)
         return err_print(ERR_SERVER_CREATE_FAIL);
+    printf("서버를 실행했습니다!\n클라이언트의 요청을 기다리는 중...\n");
     listen(server_sock, BACKLOG);
     if ((client_sock = accept_connection(server_sock, NULL, NULL)) == FALSE)
         return err_print(ERR_SERVER_ACCEPT_FAIL);
 
-    /* Receive the header containing the file's size and 
-	allocate a buffer to store the data */
-    recvall(client_sock, header, HEADER_LENGTH, NULL, NULL);
-    data_len = decode_64bit(header);
-    raw_data = malloc(data_len);
-
-    /* Finally, receive the raw data and write it to a file */
-    recvall(client_sock, raw_data, data_len, NULL, NULL);
-    fp = fopen("success.png", "w");
-    fwrite(raw_data, 1, data_len, fp);
-    fclose(fp);
+    if ((err_code = split_send(client_sock, file_name)) != TRUE)
+        return err_print(err_code);
 }
 
 int main(int argc, char **argv)
 {
+    int test_fd;
     int port;
-    if (argc != 2 || (port = get_port_num(argv[1])) == FALSE)
+    if (argc != 3 || (port = get_port_num(argv[1])) == FALSE)
     {
         printf("프로그램 실행 방식이 잘못되었습니다.\n");
-        printf("사용법 : %s (포트번호)\n", argv[0]);
+        printf("사용법 : %s (포트번호) (전송할 파일이름)\n", argv[0]);
         return (-1);
     }
-    start_server(port);
+    if ((test_fd = open(argv[2], O_RDONLY)) < 0)
+    {
+        printf("%s 파일이 존재하지 않습니다.\n", argv[2]);
+        return (-1);
+    }
+    close(test_fd);
+    start_server(port, argv[2]);
 }

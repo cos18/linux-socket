@@ -1,7 +1,7 @@
 # Makefile
 
-CSRC	= main.c connect_to_server.c
-SSRC	= main.c create_ipv4_server.c accept_connection.c
+CSRC	= main.c connect_to_server.c split_recv.c
+SSRC	= main.c create_ipv4_server.c accept_connection.c split_send.c
 USRC	= utils.c encoding.c print_bytearray.c recvall.c sendall.c
 CDIR	= ./client/
 SDIR	= ./server/

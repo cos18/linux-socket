@@ -21,7 +21,7 @@
 > 출처 : Term Project: Linux System(Socket Programming) by Eun-Seok Ryu
 
 ## 💻 프로젝트 실행방법
-프로젝트는 `make` 을 사용합니다.
+프로젝트는 `make` 를 사용합니다.
 
 #### 모든 프로그램을 컴파일하기
 
@@ -46,4 +46,5 @@ $ (또는) make fclean
 ## 📒 레퍼런스
 
 - [이 리포지토리](https://github.com/Eleveres/simple_sockets)를 기반으로 코드를 수정, 추가하여 제작했습니다.
+
 Thanks @Eleveres, owner of origin repo, for this wonderful code 😄

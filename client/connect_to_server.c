@@ -2,9 +2,6 @@
 
 int32_t connect_to_server(svr_add *add)
 {
-    /* Finds out the host addresses and connect to the first 
-    one it can */
-
     int32_t sock;
     struct addrinfo hints = {0};
     struct addrinfo *servinfo, *p;

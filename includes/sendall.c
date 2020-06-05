@@ -1,8 +1,7 @@
 #include "simple_socket.h"
 #include <errno.h>
 
-bool sendall(int32_t sock, void *buffer, int32_t len,
-             struct sockaddr *addr, socklen_t addr_len)
+bool sendall(int32_t sock, void *buffer, int32_t len)
 {
     /* calls send() until the amount of bytes specified by
     the len parameter has been sent */
@@ -13,7 +12,7 @@ bool sendall(int32_t sock, void *buffer, int32_t len,
 
     while (total_sent < len)
     {
-        if ((sent = sendto(sock, buffer_ptr, len, 0, addr, addr_len)) < 0)
+        if ((sent = send(sock, buffer_ptr, len, 0)) < 0)
             return false;
         total_sent += sent;
         buffer_ptr += sent;

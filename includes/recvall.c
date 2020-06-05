@@ -11,8 +11,7 @@ void left_shift_array(void *array, uint64_t array_length, uint64_t bytes)
         bytearray[i++] = 0;
 }
 
-bool recvall(int32_t sock, void *buffer, int32_t len,
-             struct sockaddr *addr, socklen_t *addr_len)
+bool recvall(int32_t sock, void *buffer, int32_t len)
 {
     static uint8_t tmp[MAX_CONNECTIONS + 3][BUFFER_SIZE] = {{0}};
     static uint16_t tmp_len[MAX_CONNECTIONS + 3] = {0};
@@ -37,8 +36,7 @@ bool recvall(int32_t sock, void *buffer, int32_t len,
     while (out_index < len)
     {
         in_index = 0;
-        recv_length = recvfrom(sock, in_buffer, BUFFER_SIZE, 0,
-                               (struct sockaddr *)addr, addr_len);
+        recv_length = recv(sock, in_buffer, BUFFER_SIZE, 0);
         if (recv_length <= 0)
             return false;
         while (out_index < len && in_index < recv_length)
