@@ -3,9 +3,6 @@
 
 bool sendall(int32_t sock, void *buffer, int32_t len)
 {
-    /* calls send() until the amount of bytes specified by
-    the len parameter has been sent */
-
     uint8_t *buffer_ptr = (uint8_t *)buffer;
     int32_t sent;
     int32_t total_sent = 0;

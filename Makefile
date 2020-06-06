@@ -2,7 +2,7 @@
 
 CSRC	= main.c connect_to_server.c split_recv.c
 SSRC	= main.c create_ipv4_server.c accept_connection.c split_send.c
-USRC	= utils.c encoding.c print_bytearray.c recvall.c sendall.c get_next_line.c \
+USRC	= utils.c encoding.c recvall.c sendall.c get_next_line.c \
 			send_string.c recv_string.c
 CDIR	= ./client/
 SDIR	= ./server/

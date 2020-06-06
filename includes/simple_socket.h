@@ -25,12 +25,8 @@ bool sendall(int32_t sock, void *buffer, int32_t len);
 bool recvall(int32_t sock, void *buffer, int32_t len);
 
 void encode_64bit(uint64_t n, uint8_t *byetarray);
-void encode_32bit(uint32_t n, uint8_t *byetarray);
 void encode_16bit(uint16_t n, uint8_t *byetarray);
 uint64_t decode_64bit(uint8_t *byetarray);
-uint32_t decode_32bit(uint8_t *byetarray);
 uint16_t decode_16bit(uint8_t *byetarray);
-
-void print_bytearray(void *array, uint64_t array_len, const char *mode);
 
 #endif
