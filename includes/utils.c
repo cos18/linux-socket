@@ -45,8 +45,10 @@ void err_print(int errno)
         "올바르지 않은 헤더를 읽어왔습니다.",
         "서버에 접속하는데 실패했습니다. 서버가 접속 가능한지 확인해주세요.",
         "파일을 전송하는 중 오류가 발생핬습니다.",
-        "문자열을 전송하는 중 오류가 발생핬습니다."};
-    printf("ERROR : %s\n", errstr[errno]);
+        "문자열을 전송하는 중 오류가 발생핬습니다.",
+        "파일을 수신하는 중 오류가 발생했습니다.",
+        "문자열을 수신하는 중 오류가 발생했습니다."};
+    printf("ERROR %d : %s\n", errno, errstr[errno]);
 }
 
 /**
@@ -168,4 +170,14 @@ char *ft_strpush(char *s, int push)
     while (s[locate])
         s[locate++] = '\0';
     return (s);
+}
+
+void loading(uint64_t total, uint64_t file_size)
+{
+    int progress = total * 100 / file_size;
+    printf("\r진행중 [");
+    for (int i = 1; i <= 20; i++)
+        printf("%c", (i * 5 <= progress) ? '=' : ' ');
+    printf("] %d%%", progress);
+    fflush(stdout);
 }

@@ -10,13 +10,15 @@ int split_recv(int8_t socket, char *file_name)
     uint8_t raw_data[BUFFER_SIZE];
     uint8_t flag;
     uint16_t data_len;
+    uint64_t total = 0;
+    uint64_t file_size;
 
     while (continued)
     {
         memset(header, 0, HEADER_LENGTH);
         if (!recvall(socket, header, HEADER_LENGTH))
         {
-            errno = ERR_STRING_RECV_FAIL;
+            errno = ERR_FILE_RECV_FAIL;
             break;
         }
         data_len = decode_16bit(header);
@@ -25,6 +27,14 @@ int split_recv(int8_t socket, char *file_name)
         {
         case FILE_SEND_START:
             fp = fopen(file_name, "w");
+            memset(raw_data, 0, BUFFER_SIZE);
+            if (!recvall(socket, raw_data, 8))
+            {
+                errno = ERR_FILE_RECV_FAIL;
+                continued = FALSE;
+                continue;
+            }
+            file_size = decode_64bit(raw_data);
             continue;
         case FILE_SEND_END:
             continued = FALSE;
@@ -42,6 +52,8 @@ int split_recv(int8_t socket, char *file_name)
             break;
         }
         fwrite(raw_data, 1, data_len, fp);
+        total += data_len;
+        loading(total, file_size);
     }
     if (fp)
         fclose(fp);

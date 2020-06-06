@@ -20,7 +20,7 @@ void start_server(int port, char *file_name)
             printf("클라이언트에게 요청을 받았습니다!\nClient : %s\n", message);
             free(message);
             if ((err_code = split_send(client_sock, file_name)) == TRUE)
-                printf("전송이 완료되었습니다!\n");
+                printf("\n전송이 완료되었습니다!\n");
         }
     }
     printf("서버를 종료합니다.\n");

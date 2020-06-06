@@ -26,7 +26,7 @@ void receive_to_server(svr_add *add, char *file_name)
     {
         printf("접속 후 서버에게 '%s'라고 보냈습니다.\n수신을 시작합니다.\n", hello);
         if ((errno = split_recv(server_sock, file_name)) == TRUE)
-            printf("수신이 완료되었습니다\n");
+            printf("\n수신이 완료되었습니다\n");
     }
     printf("통신을 종료합니다\n");
     free(hello);

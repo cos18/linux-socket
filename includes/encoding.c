@@ -38,7 +38,7 @@ uint64_t decode_64bit(uint8_t *byetarray)
     uint8_t shift = 56;
     for (uint16_t i = 0; i < 8; i++)
     {
-        decoded = decoded | (byetarray[i] << shift);
+        decoded = decoded | (uint64_t)byetarray[i] << shift;
         shift -= 8;
     }
     return decoded;

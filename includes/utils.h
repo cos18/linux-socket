@@ -49,6 +49,7 @@ char *ft_strnul(void);
 char *ft_strjoin(char const *s1, char const *s2);
 char *ft_strchr(const char *s, int c);
 char *ft_strpush(char *s, int push);
+void loading(uint64_t total, uint64_t file_size);
 
 int get_next_line(int fd, char **line);
 

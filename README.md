@@ -36,6 +36,18 @@ $ (또는) make all
 $ make client (또는 server)
 ```
 
+#### 컴파일된 프로그램 실행하기
+##### 서버 프로그램
+```bash
+$ ./socket_server (사용할 포트 번호) (전송할 파일 경로)
+$ ./socket_server 10000 cute.png
+```
+##### 클라이언트 프로그램
+```bash
+$ ./socket_client (서버의 주소):(포트번호) (저장받을 파일 경로)
+$ ./socket_client 127.0.0.1:10000 cat.png
+```
+
 #### 컴파일된 오브젝트 파일 지우기, 프로그램까지 다 지우기
 
 ```bash
