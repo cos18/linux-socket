@@ -1,3 +1,6 @@
+*.png
+*.mp4
+
 linux.sh
 socket*
 # Created by https://www.gitignore.io/api/c,macos,visualstudiocode

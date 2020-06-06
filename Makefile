@@ -2,7 +2,8 @@
 
 CSRC	= main.c connect_to_server.c split_recv.c
 SSRC	= main.c create_ipv4_server.c accept_connection.c split_send.c
-USRC	= utils.c encoding.c print_bytearray.c recvall.c sendall.c
+USRC	= utils.c encoding.c print_bytearray.c recvall.c sendall.c get_next_line.c \
+			send_string.c recv_string.c
 CDIR	= ./client/
 SDIR	= ./server/
 UDIR	= ./includes/
@@ -20,18 +21,19 @@ CNAME	= socket_client
 SNAME	= socket_server
 
 GCC		= gcc
+GCCOP	= -Werror -Wextra -Wall
 RM		= rm -f
 
 .c.o:
-		$(GCC) -c $< -o $(<:.c=.o) -I$(INCDIR)
+		$(GCC) $(GCCOP) -c $< -o $(<:.c=.o) -I$(INCDIR)
 	
 all:	client server
 
 client:	$(COBJS) $(UOBJS)
-		$(GCC) -o $(CNAME) $(COBJS) $(UOBJS)
+		$(GCC) $(GCCOP) -o $(CNAME) $(COBJS) $(UOBJS)
 
 server:	$(SOBJS) $(UOBJS)
-		$(GCC) -o $(SNAME) $(SOBJS) $(UOBJS)
+		$(GCC) $(GCCOP) -o $(SNAME) $(SOBJS) $(UOBJS)
 
 clean:
 		$(RM) $(COBJS) $(SOBJS) $(UOBJS)

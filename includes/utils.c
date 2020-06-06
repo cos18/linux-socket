@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <arpa/inet.h>
+#include "simple_socket.h"
 #include "utils.h"
 
 /**
@@ -40,7 +41,11 @@ void err_print(int errno)
     char *errstr[10] = {
         "",
         "서버를 생성하는 도중 문제가 발생했습니다.",
-        "클라이언트의 요청을 받는 도중 문제가 생겼습니다."};
+        "클라이언트의 요청을 받는 도중 문제가 생겼습니다.",
+        "올바르지 않은 헤더를 읽어왔습니다.",
+        "서버에 접속하는데 실패했습니다. 서버가 접속 가능한지 확인해주세요.",
+        "파일을 전송하는 중 오류가 발생핬습니다.",
+        "문자열을 전송하는 중 오류가 발생핬습니다."};
     printf("ERROR : %s\n", errstr[errno]);
 }
 
@@ -80,4 +85,87 @@ void free_add(svr_add *s)
     free(s->ip);
     free(s->port);
     free(s);
+}
+
+uint16_t add_header_flag(uint16_t header, uint8_t flag)
+{
+    return header | (flag << (HEADER_LENGTH * 8 - HEADER_FLAG_BIT));
+}
+
+uint8_t get_header_flag(uint16_t *header)
+{
+    uint8_t result;
+    result = *header >> (HEADER_LENGTH * 8 - HEADER_FLAG_BIT);
+    *header &= ((1 << (HEADER_LENGTH * 8 - HEADER_FLAG_BIT)) - 1);
+    return result;
+}
+
+char *ft_strnul(void)
+{
+    char *result;
+    result = (char *)malloc(1);
+    *result = '\0';
+    return (result);
+}
+
+char *ft_strjoin(char const *s1, char const *s2)
+{
+    char *result;
+    int locate;
+
+    if (!s1 || !s2)
+        return (NULL);
+    result = (char *)malloc(strlen(s1) + strlen(s2) + 1);
+    if (result)
+    {
+        locate = 0;
+        while (*s1)
+        {
+            result[locate++] = *s1;
+            s1++;
+        }
+        while (*s2)
+        {
+            result[locate++] = *s2;
+            s2++;
+        }
+        result[locate] = '\0';
+    }
+    return (result);
+}
+
+char *ft_strchr(const char *s, int c)
+{
+    int is_end;
+    char *now;
+
+    is_end = 0;
+    now = (char *)s;
+    while (1)
+    {
+        if (*now == c)
+            break;
+        if (*now == '\0')
+        {
+            is_end = 1;
+            break;
+        }
+        now++;
+    }
+    return ((is_end) ? NULL : now);
+}
+
+char *ft_strpush(char *s, int push)
+{
+    int locate;
+
+    locate = 0;
+    while (s[locate + push])
+    {
+        s[locate] = s[locate + push];
+        locate++;
+    }
+    while (s[locate])
+        s[locate++] = '\0';
+    return (s);
 }

@@ -1,16 +1,18 @@
 #include "simple_socket.h"
 #include "utils.h"
 
-int split_recv(int8_t socket, char *file_name)
+int recv_string(int8_t socket, char **str)
 {
     int continued = TRUE;
     int errno = 0;
-    FILE *fp = NULL;
     uint8_t header[HEADER_LENGTH];
-    uint8_t raw_data[BUFFER_SIZE];
+    uint8_t raw_data[BUFFER_SIZE + 1];
     uint8_t flag;
     uint16_t data_len;
+    char *tmp;
 
+    *str = (char *)malloc(1);
+    **str = 0;
     while (continued)
     {
         memset(header, 0, HEADER_LENGTH);
@@ -23,12 +25,11 @@ int split_recv(int8_t socket, char *file_name)
         flag = get_header_flag(&data_len);
         switch (flag)
         {
-        case FILE_SEND_START:
-            fp = fopen(file_name, "w");
+        case STRING_SEND_START:
             continue;
-        case FILE_SEND_END:
+        case STRING_SEND_END:
             continued = FALSE;
-        case FILE_SEND:
+        case STRING_SEND:
             break;
         default:
             continued = FALSE;
@@ -38,12 +39,13 @@ int split_recv(int8_t socket, char *file_name)
         memset(raw_data, 0, BUFFER_SIZE);
         if (!recvall(socket, raw_data, data_len))
         {
-            errno = ERR_FILE_RECV_FAIL;
+            errno = ERR_STRING_RECV_FAIL;
             break;
         }
-        fwrite(raw_data, 1, data_len, fp);
+        raw_data[data_len] = 0;
+        tmp = ft_strjoin(*str, (char *)raw_data);
+        free(*str);
+        *str = tmp;
     }
-    if (fp)
-        fclose(fp);
     return (errno ? errno : TRUE);
 };
