@@ -43,13 +43,13 @@ int get_port_num(char *str);
 void err_print(int errno);
 svr_add *create_add(char *str);
 void free_add(svr_add *s);
-uint16_t add_header_flag(uint16_t header, uint8_t flag);
-uint8_t get_header_flag(uint16_t *header);
+u_int16_t add_header_flag(u_int16_t header, u_int8_t flag);
+u_int8_t get_header_flag(u_int16_t *header);
 char *ft_strnul(void);
 char *ft_strjoin(char const *s1, char const *s2);
 char *ft_strchr(const char *s, int c);
 char *ft_strpush(char *s, int push);
-void loading(uint64_t total, uint64_t file_size);
+void loading(u_int64_t total, u_int64_t file_size);
 
 int get_next_line(int fd, char **line);
 
