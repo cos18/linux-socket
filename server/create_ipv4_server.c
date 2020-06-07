@@ -1,7 +1,7 @@
 #include "simple_socket.h"
 #include "utils.h"
 
-int32_t create_ipv4_server(uint16_t server_port, bool set_nonblock)
+int32_t create_ipv4_server(u_int16_t server_port, bool set_nonblock)
 {
     int32_t sock;
     struct sockaddr_in addr = {0};

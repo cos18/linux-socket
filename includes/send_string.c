@@ -4,10 +4,10 @@
 int send_string(int32_t sock, char *str)
 {
     int is_last;
-    uint8_t raw_data[HEADER_LENGTH + BUFFER_SIZE] = {0};
-    uint16_t sended = 0;
-    uint64_t total = 0;
-    uint64_t len;
+    u_int8_t raw_data[HEADER_LENGTH + BUFFER_SIZE] = {0};
+    u_int16_t sended = 0;
+    u_int64_t total = 0;
+    u_int64_t len;
 
     encode_16bit(add_header_flag(0, STRING_SEND_START), raw_data);
     sendall(sock, raw_data, HEADER_LENGTH);

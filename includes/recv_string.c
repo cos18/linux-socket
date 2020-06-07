@@ -5,10 +5,10 @@ int recv_string(int8_t socket, char **str)
 {
     int continued = TRUE;
     int errno = 0;
-    uint8_t header[HEADER_LENGTH];
-    uint8_t raw_data[BUFFER_SIZE + 1];
-    uint8_t flag;
-    uint16_t data_len;
+    u_int8_t header[HEADER_LENGTH];
+    u_int8_t raw_data[BUFFER_SIZE + 1];
+    u_int8_t flag;
+    u_int16_t data_len;
     char *tmp;
 
     *str = (char *)malloc(1);

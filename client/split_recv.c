@@ -6,12 +6,12 @@ int split_recv(int8_t socket, char *file_name)
     int continued = TRUE;
     int errno = 0;
     FILE *fp = NULL;
-    uint8_t header[HEADER_LENGTH];
-    uint8_t raw_data[BUFFER_SIZE];
-    uint8_t flag;
-    uint16_t data_len;
-    uint64_t total = 0;
-    uint64_t file_size;
+    u_int8_t header[HEADER_LENGTH];
+    u_int8_t raw_data[BUFFER_SIZE];
+    u_int8_t flag;
+    u_int16_t data_len;
+    u_int64_t total = 0;
+    u_int64_t file_size;
 
     while (continued)
     {

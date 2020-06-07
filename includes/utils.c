@@ -89,14 +89,14 @@ void free_add(svr_add *s)
     free(s);
 }
 
-uint16_t add_header_flag(uint16_t header, uint8_t flag)
+u_int16_t add_header_flag(u_int16_t header, u_int8_t flag)
 {
     return header | (flag << (HEADER_LENGTH * 8 - HEADER_FLAG_BIT));
 }
 
-uint8_t get_header_flag(uint16_t *header)
+u_int8_t get_header_flag(u_int16_t *header)
 {
-    uint8_t result;
+    u_int8_t result;
     result = *header >> (HEADER_LENGTH * 8 - HEADER_FLAG_BIT);
     *header &= ((1 << (HEADER_LENGTH * 8 - HEADER_FLAG_BIT)) - 1);
     return result;
@@ -172,7 +172,7 @@ char *ft_strpush(char *s, int push)
     return (s);
 }
 
-void loading(uint64_t total, uint64_t file_size)
+void loading(u_int64_t total, u_int64_t file_size)
 {
     int progress = total * 100 / file_size;
     printf("\r진행중 [");

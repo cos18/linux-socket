@@ -1,9 +1,9 @@
 #include "simple_socket.h"
 
-void left_shift_array(void *array, uint64_t array_length, uint64_t bytes)
+void left_shift_array(void *array, u_int64_t array_length, u_int64_t bytes)
 {
     int8_t *bytearray = (int8_t *)array;
-    uint64_t i = -1;
+    u_int64_t i = -1;
 
     while (++i < array_length - bytes)
         bytearray[i] = bytearray[i + bytes];
@@ -13,10 +13,10 @@ void left_shift_array(void *array, uint64_t array_length, uint64_t bytes)
 
 bool recvall(int32_t sock, void *buffer, int32_t len)
 {
-    static uint8_t tmp[MAX_CONNECTIONS + 3][BUFFER_SIZE] = {{0}};
-    static uint16_t tmp_len[MAX_CONNECTIONS + 3] = {0};
-    uint8_t in_buffer[BUFFER_SIZE] = {0};
-    uint8_t *out_buffer = (uint8_t *)buffer;
+    static u_int8_t tmp[MAX_CONNECTIONS + 3][BUFFER_SIZE] = {{0}};
+    static u_int16_t tmp_len[MAX_CONNECTIONS + 3] = {0};
+    u_int8_t in_buffer[BUFFER_SIZE] = {0};
+    u_int8_t *out_buffer = (u_int8_t *)buffer;
     int32_t out_index = 0, in_index = 0, tmp_index = 0;
     int32_t recv_length = 0;
 

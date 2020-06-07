@@ -3,7 +3,7 @@
 
 bool sendall(int32_t sock, void *buffer, int32_t len)
 {
-    uint8_t *buffer_ptr = (uint8_t *)buffer;
+    u_int8_t *buffer_ptr = (u_int8_t *)buffer;
     int32_t sent;
     int32_t total_sent = 0;
 

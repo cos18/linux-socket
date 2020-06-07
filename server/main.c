@@ -11,7 +11,7 @@ void start_server(int port, char *file_name)
         return err_print(ERR_SERVER_CREATE_FAIL);
     printf("서버를 실행했습니다!\n클라이언트의 요청을 기다리는 중...\n");
     listen(server_sock, BACKLOG);
-    if ((client_sock = accept_connection(server_sock, NULL, NULL)) == FALSE)
+    if ((client_sock = accept_connection(server_sock)) == FALSE)
         err_code = ERR_SERVER_ACCEPT_FAIL;
     else
     {

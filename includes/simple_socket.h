@@ -18,15 +18,15 @@
 #define BUFFER_SIZE 1460
 #define HEADER_LENGTH 2
 
-int32_t create_ipv4_server(uint16_t server_port, bool set_nonblock);
+int32_t create_ipv4_server(u_int16_t server_port, bool set_nonblock);
 int32_t connect_to_server(svr_add *add);
-int32_t accept_connection(int32_t server_sock, struct sockaddr *addr, socklen_t *addr_len);
+int32_t accept_connection(int32_t server_sock);
 bool sendall(int32_t sock, void *buffer, int32_t len);
 bool recvall(int32_t sock, void *buffer, int32_t len);
 
-void encode_64bit(uint64_t n, uint8_t *byetarray);
-void encode_16bit(uint16_t n, uint8_t *byetarray);
-uint64_t decode_64bit(uint8_t *byetarray);
-uint16_t decode_16bit(uint8_t *byetarray);
+void encode_64bit(u_int64_t n, u_int8_t *byetarray);
+void encode_16bit(u_int16_t n, u_int8_t *byetarray);
+u_int64_t decode_64bit(u_int8_t *byetarray);
+u_int16_t decode_16bit(u_int8_t *byetarray);
 
 #endif
